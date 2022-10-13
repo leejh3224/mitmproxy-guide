@@ -29,8 +29,11 @@ def setup():
         if result.returncode != 0:
             sys.exit(f"[ERROR] failed to install {debugger_name}")
 
-    mitmproxy_config_path = os.path.expanduser("~/.mitmproxy/config.yaml")
-    if not os.path.exists(mitmproxy_config_path):
+    dot_mitmproxy_path = os.path.expanduser("~/.mitmproxy")
+    if not os.path.exists(dot_mitmproxy_path):
+        os.makedirs(dot_mitmproxy_path, exist_ok=True)
+
+        mitmproxy_config_path = f"{dot_mitmproxy_path}/config.yaml"
         with open(mitmproxy_config_path, "w") as file:
             file.write(f"listen_port: {const.proxy_port}\nweb_port: {const.web_proxy_port}")
 
